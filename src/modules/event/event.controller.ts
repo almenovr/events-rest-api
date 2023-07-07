@@ -11,6 +11,7 @@ import {
 import { EventService } from './event.service';
 import { EventRequestDto } from '../../data-base/dto/event-request.dto';
 import { QueryDto } from '../../data-base/dto/query.dto';
+import { EventEntity } from '../../data-base/entites/event.entity';
 @Controller('events')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
@@ -27,7 +28,10 @@ export class EventController {
 
   @Post()
   async createEvent(@Body() json: EventRequestDto) {
-    await this.eventService.createEvent(json);
+    const entity = await this.eventService.createEvent(json);
+    return await EventEntity.findOneBy({
+      id: entity.id,
+    });
   }
 
   @Put('/:eventId')
@@ -35,11 +39,14 @@ export class EventController {
     @Param('eventId') eventId: number,
     @Body() json: EventRequestDto,
   ) {
-    await this.eventService.updateEvent(eventId, json);
+    const entity = await this.eventService.updateEvent(eventId, json);
+    return await EventEntity.findOneBy({
+      id: entity.id,
+    });
   }
 
   @Delete('/:eventId')
   async delete(@Param('eventId') eventId: number) {
-    await this.eventService.deleteEvent(eventId);
+    return await this.eventService.deleteEvent(eventId);
   }
 }

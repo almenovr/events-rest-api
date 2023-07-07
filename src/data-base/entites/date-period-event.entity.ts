@@ -12,7 +12,7 @@ import {
 import { EventEntity } from './event.entity';
 
 @Entity()
-export class VenueEntity extends BaseEntity {
+export class DatePeriodEventEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,28 +22,13 @@ export class VenueEntity extends BaseEntity {
   @UpdateDateColumn({ name: 'modified_on' })
   modifiedOn: Date;
 
-  @Column()
-  name: string;
+  @Column({ name: 'start_date', type: 'timestamp with time zone' })
+  startDate: Date;
 
-  @Column()
-  country: string;
+  @Column({ name: 'end_date', type: 'timestamp with time zone' })
+  endDate: Date;
 
-  @Column()
-  state: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  timezone: string;
-
-  @Column({ name: 'zip_code' })
-  zipCode: string;
-
-  @Column()
-  address: string;
-
-  @ManyToOne(() => EventEntity, (eventEntity) => eventEntity.venues, {
+  @ManyToOne(() => EventEntity, (eventEntity) => eventEntity.datePeriod, {
     onDelete: 'CASCADE',
     cascade: true,
   })
@@ -52,7 +37,7 @@ export class VenueEntity extends BaseEntity {
   })
   event: EventEntity;
 
-  @RelationId((venue: VenueEntity) => venue.event)
+  @RelationId((datePeriodEvent: DatePeriodEventEntity) => datePeriodEvent.event)
   @Column({ name: 'event_id' })
   eventId: number;
 }

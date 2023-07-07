@@ -9,16 +9,17 @@ import {
 } from 'typeorm';
 import { StatusEnum } from '../enum/status.enum';
 import { VenueEntity } from './venue.entity';
+import { DatePeriodEventEntity } from './date-period-event.entity';
 
 @Entity()
 export class EventEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_on' })
   createdOn: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'modified_on' })
   modifiedOn: Date;
 
   @Column()
@@ -37,11 +38,16 @@ export class EventEntity extends BaseEntity {
   @Column({ nullable: true })
   thumbnail: string;
 
-  @Column()
-  start_date: Date;
-
-  @Column()
-  end_date: Date;
+  @OneToMany(
+    () => DatePeriodEventEntity,
+    (datePeriodEvent) => datePeriodEvent.event,
+    {
+      eager: true,
+      nullable: true,
+      onDelete: 'CASCADE',
+    },
+  )
+  datePeriod: DatePeriodEventEntity[];
 
   @Column({ type: 'enum', enum: StatusEnum, nullable: true })
   status: StatusEnum;

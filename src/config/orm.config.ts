@@ -2,6 +2,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import 'dotenv/config';
 import { EventEntity } from '../data-base/entites/event.entity';
 import { VenueEntity } from '../data-base/entites/venue.entity';
+import { DatePeriodEventEntity } from '../data-base/entites/date-period-event.entity';
 
 const ormConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -11,7 +12,7 @@ const ormConfig: TypeOrmModuleOptions = {
   host: process.env.TYPEORM_HOST,
   port: 5468,
   logging: false,
-  entities: [EventEntity, VenueEntity],
+  entities: [EventEntity, VenueEntity, DatePeriodEventEntity],
   synchronize: true,
   autoLoadEntities: true,
 };
